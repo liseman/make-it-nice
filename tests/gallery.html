@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>sample gallery (dev)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,700&family=Inter:wght@400;600;700&family=Nunito:wght@500;800&family=Playfair+Display:wght@400;700&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  body{margin:0;background:#ddd;font:13px system-ui;padding:12px}
+  .grid{display:grid;grid-template-columns:repeat(5, 220px);gap:14px}
+  .cell{background:#fff;padding:6px;border-radius:6px}
+  .lbl{font-size:11px;color:#555;margin-bottom:4px;font-family:monospace;white-space:pre}
+</style>
+</head>
+<body>
+<div id="grid" class="grid"></div>
+<script type="module">
+  import { AXES, AXIS_INDEX, rng } from '../site/engine.js';
+  import { renderSample, ARCHETYPE_LABEL } from '../site/samples.js';
+  const grid = document.getElementById('grid');
+  const params = new URLSearchParams(location.search);
+  const mode = params.get('mode') || 'axes';
+  const rows = [];
+  if (mode === 'axes') {
+    // for each axis: lo and hi, all other axes 0 → shows what each axis does
+    for (const a of AXES) {
+      for (const side of [-1, 1]) {
+        const x = AXES.map(() => 0); x[AXIS_INDEX[a.id]] = side;
+        rows.push({ label: `${a.id} ${side > 0 ? a.hi : a.lo}`, x, seed: 77 });
+      }
+    }
+  } else {
+    // random vectors
+    const r = rng(Number(params.get('seed') || 5));
+    for (let k = 0; k < 8; k++) rows.push({ label: `random ${k}`, x: AXES.map(() => Math.round(r.range(-1, 1) * 100) / 100), seed: 100 + k });
+  }
+  for (const row of rows) {
+    for (const arch of Object.keys(ARCHETYPE_LABEL)) {
+      const cell = document.createElement('div'); cell.className = 'cell';
+      const lbl = document.createElement('div'); lbl.className = 'lbl'; lbl.textContent = `${row.label} · ${arch}`;
+      cell.appendChild(lbl);
+      cell.appendChild(renderSample(arch, row.x, row.seed));
+      grid.appendChild(cell);
+    }
+  }
+</script>
+</body>
+</html>
