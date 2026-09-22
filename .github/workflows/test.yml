@@ -1,0 +1,28 @@
+name: Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  unit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Engine unit tests
+        run: node --test tests/engine.test.mjs
+      - name: API integration tests (local Worker + D1)
+        working-directory: worker
+        env:
+          WRANGLER_SEND_METRICS: 'false'
+        run: |
+          npm ci
+          npx wrangler d1 migrations apply make-it-nice --local
+          echo "ADMIN_TOKEN=devtoken123" > .dev.vars
+          (npx wrangler dev --port 8787 --ip 127.0.0.1 > dev.log 2>&1 &)
+          for i in $(seq 1 60); do sleep 1; curl -sf http://127.0.0.1:8787/api/health && break; done
+          cd .. && node --test tests/api.test.mjs

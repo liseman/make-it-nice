@@ -1,0 +1,48 @@
+/* dashboard-only styles (site chrome comes from ../styles.css) */
+.dash-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin: 8px 0 18px; }
+.dash-head h1 { font-size: 1.6rem; margin: 0; }
+.dash-head .meta { color: var(--muted); font-size: .9rem; }
+.gate { max-width: 520px; margin: 40px auto; }
+.gate input { width: 100%; font: inherit; padding: .7em .9em; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg2); margin: 10px 0; }
+.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 20px; }
+.kpi { background: var(--bg2); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px; }
+.kpi .v { font-family: var(--font-h); font-size: 1.7rem; font-weight: 700; line-height: 1.1; }
+.kpi .l { color: var(--muted); font-size: .82rem; margin-top: 2px; }
+.kpi .sub { color: var(--muted); font-size: .78rem; margin-top: 6px; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 18px; }
+@media (max-width: 860px) { .grid2 { grid-template-columns: 1fr; } }
+.card { background: var(--bg2); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px 20px; min-width: 0; }
+.card h2 { font-size: 1.05rem; margin: 0 0 4px; }
+.card .sub { color: var(--muted); font-size: .85rem; margin: 0 0 12px; }
+.chart { width: 100%; height: auto; display: block; overflow: visible; font-family: var(--font-b); }
+.chart text { font-size: 11px; fill: var(--muted); }
+.chart .axis-line { stroke: var(--line); }
+.chart .bar { fill: var(--fg); }
+.chart .bar.alt { fill: var(--accent-soft); stroke: var(--line); }
+.chart .bar.accent { fill: #2f6df6; }
+.chart .line { fill: none; stroke: #2f6df6; stroke-width: 2; }
+.chart .dot { fill: #2f6df6; }
+.chart .val { fill: var(--fg); font-weight: 600; }
+.legend { display: flex; gap: 14px; font-size: .8rem; color: var(--muted); margin-top: 6px; }
+.legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 5px; vertical-align: -1px; }
+table { width: 100%; border-collapse: collapse; font-size: .86rem; }
+th, td { text-align: left; padding: 7px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { color: var(--muted); font-weight: 600; font-size: .78rem; text-transform: uppercase; letter-spacing: .04em; }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+.table-wrap { overflow-x: auto; }
+.axis-row { display: grid; grid-template-columns: 6.5em 1fr 6.5em 4em 4em; gap: 10px; align-items: center; font-size: .82rem; padding: 4px 0; }
+.axis-row .lo { text-align: right; color: var(--muted); }
+.axis-row .hi { color: var(--muted); }
+.axis-row .num { text-align: right; color: var(--muted); font-variant-numeric: tabular-nums; }
+.axis-row .bar { position: relative; height: 12px; background: var(--accent-soft); border-radius: 999px; }
+.axis-row .bar b { position: absolute; top: -2px; bottom: -2px; left: 50%; width: 1px; background: var(--line); }
+.axis-row .bar i { position: absolute; top: 0; bottom: 0; background: var(--fg); border-radius: 999px; }
+.axis-row .bar u { position: absolute; top: 3px; bottom: 3px; background: #2f6df6; opacity: .55; border-radius: 999px; }
+.axis-head { font-size: .72rem; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+pre.json { font: .78rem/1.4 ui-monospace, Menlo, Consolas, monospace; background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 12px; overflow: auto; max-height: 360px; }
+details summary { cursor: pointer; color: var(--muted); font-size: .9rem; }
+.pill { display: inline-block; font-size: .72rem; padding: 1px 8px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); }
+.pill.good { color: #1d7a3a; border-color: #bfe3c9; background: #eaf7ee; }
+.pill.bad { color: #a12b2b; border-color: #efc3c3; background: #fbeeee; }
+.stars-inline { color: #2f6df6; letter-spacing: -1px; }
+.mode-local { background: #fff7e6; border: 1px solid #f2d9a6; color: #6b4e00; padding: 10px 14px; border-radius: var(--radius); margin-bottom: 16px; font-size: .92rem; }

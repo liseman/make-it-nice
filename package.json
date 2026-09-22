@@ -1,0 +1,16 @@
+{
+  "name": "make-it-nice",
+  "private": true,
+  "version": "1.0.0",
+  "description": "You can't describe what you like. But you can pick. Ten pairs → your taste as a page, in words, and as a prompt for your AI.",
+  "type": "module",
+  "scripts": {
+    "serve": "python3 -m http.server 8000 -d site",
+    "dev": "npm --prefix worker run dev",
+    "test": "node --test tests/engine.test.mjs",
+    "test:api": "node --test tests/api.test.mjs",
+    "deploy:worker": "npm --prefix worker run deploy"
+  },
+  "license": "MIT",
+  "author": "Luke Iseman (https://lukeiseman.com)"
+}

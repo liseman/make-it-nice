@@ -1,0 +1,18 @@
+{
+  "name": "make-it-nice-worker",
+  "private": true,
+  "version": "1.0.0",
+  "description": "make it nice — Cloudflare Worker API (D1) that learns from everyone's picks",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "migrate:local": "wrangler d1 migrations apply make-it-nice --local",
+    "migrate": "wrangler d1 migrations apply make-it-nice --remote",
+    "deploy": "wrangler deploy",
+    "secret:admin": "wrangler secret put ADMIN_TOKEN",
+    "tail": "wrangler tail"
+  },
+  "devDependencies": {
+    "wrangler": "^4.0.0"
+  }
+}

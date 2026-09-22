@@ -28,10 +28,11 @@ export function styleFromVector(x, seed = 1) {
   const hue2 = (hue + spreadSign * spread + 360) % 360;
   const hsl = (h, s, l, a = 1) => `hsl(${Math.round(h)} ${Math.round(clamp(s, 0, 100))}% ${Math.round(clamp(l, 0, 100))}%${a < 1 ? ` / ${a}` : ''})`;
 
-  const fontH = serif >= 0.5
-    ? (playful >= 0.5 ? '"Fraunces", "Iowan Old Style", Georgia, serif' : '"Playfair Display", "Iowan Old Style", Georgia, serif')
-    : (playful >= 0.5 ? '"Nunito", "Space Grotesk", Inter, system-ui, sans-serif' : '"Space Grotesk", Inter, system-ui, sans-serif');
-  const fontB = serif >= 0.5 ? '"Fraunces", Georgia, serif' : (playful >= 0.5 ? '"Nunito", Inter, system-ui, sans-serif' : 'Inter, system-ui, sans-serif');
+  // NB: single quotes only — these land inside a double-quoted style attribute
+  const fontH = serif > 0.5
+    ? (playful > 0.5 ? "'Fraunces', 'Iowan Old Style', Georgia, serif" : "'Playfair Display', 'Iowan Old Style', Georgia, serif")
+    : (playful > 0.5 ? "'Nunito', 'Space Grotesk', Inter, system-ui, sans-serif" : "'Space Grotesk', Inter, system-ui, sans-serif");
+  const fontB = serif > 0.5 ? "'Fraunces', Georgia, serif" : (playful > 0.5 ? "'Nunito', Inter, system-ui, sans-serif" : "Inter, system-ui, sans-serif");
 
   return {
     hue, hue2, S, dark, bgL, contrast, ornament, corner, organic, depth, serif, density, symmetric, playful, sat, light, temp,
@@ -98,7 +99,7 @@ function composition(st, S, w, h, count) {
   const n = Math.max(1, count);
   for (let i = 0; i < n; i++) {
     const q = S('shape' + i);
-    const size = (h * (0.28 + q() * 0.3)) * (1 - 0.35 * (i / n));
+    const size = (h * (0.28 + q() * 0.3)) * (1 - 0.35 * (i / n)) * Math.min(1, 3.4 / n);
     const jy = q(), jx = q(), jy2 = q();
     let cx, cy;
     if (st.symmetric >= 0.5) { const k = i - (n - 1) / 2; cx = w / 2 + k * (w / (n + 0.4)); cy = h / 2 + (jy - 0.5) * h * 0.15; }
@@ -248,8 +249,8 @@ function hero(st, S) {
 function specimen(st, S) {
   const line = S('copy').pick(SPEC_LINES);
   const letters = st.serif > 0.5 ? 'Ag' : 'Aa';
-  const rows = 1 + Math.round(st.density * 2);
-  const sizes = ['1.15em', '0.95em', '0.8em'];
+  const rows = 1 + Math.round(st.density * 1.4);
+  const sizes = ['1.1em', '0.9em', '0.8em'];
   const paras = Array.from({ length: rows }, (_, i) => `<p class="mn-spec-line" style="font-size:${sizes[i]}">${line}</p>`).join('');
   return `
   <div class="mn mn-specimen" style="${vars(st)};text-align:var(--align)">
@@ -333,19 +334,21 @@ export const SAMPLE_CSS = `
 .mn-btn-primary{background:var(--grad);color:var(--bg);border-color:transparent}
 .mn-pattern{aspect-ratio:4/5}
 .mn-art-full{width:100%;height:100%;display:block}
-.mn-hero{display:flex;flex-direction:column;padding:var(--pad)}
+.mn-hero{display:flex;flex-direction:column;padding:var(--pad) var(--pad) 0}
 .mn-nav{display:flex;align-items:center;gap:var(--gap);font-size:calc(3.3cqw * var(--scale));color:var(--muted);margin-bottom:var(--gap)}
 .mn-nav nav{display:flex;gap:calc(var(--gap) * .9)}
 .mn-logo{display:flex;align-items:center;gap:.4em;color:var(--fg);font-family:var(--font-h);font-size:1.25em}
 .mn-logo i{width:.9em;height:.9em;border-radius:calc(var(--radius) * .35);display:inline-block}
-.mn-hero-body{display:flex;flex-direction:column;gap:calc(var(--gap) * .5);padding-top:calc(var(--gap) * .6);position:relative;z-index:1}
+.mn-hero-body{display:flex;flex-direction:column;gap:calc(var(--gap) * .5);padding-top:calc(var(--gap) * .4);position:relative;z-index:1;flex:0 0 auto}
 .mn-pill{font-size:calc(2.9cqw * var(--scale));padding:.35em .8em;border:1px solid var(--line);border-radius:var(--radius);color:var(--accent);width:max-content;font-weight:600}
-.mn-h1{font-family:var(--font-h);font-size:calc(9.5cqw * var(--scale));line-height:1.05;margin:0;font-weight:var(--weight);text-wrap:balance}
+.mn-h1{font-family:var(--font-h);font-size:calc(9cqw * var(--scale));line-height:1.05;margin:0;font-weight:var(--weight);text-wrap:balance}
 .mn-p{margin:0;font-size:calc(3.8cqw * var(--scale));color:var(--muted);max-width:32ch}
 .mn-hero .mn-actions{margin-top:.5em}
-.mn-hero-art{position:absolute;left:0;right:0;bottom:0;width:100%;height:36%}
-.mn-specimen{padding:var(--pad);display:flex;flex-direction:column;gap:calc(var(--gap) * .4)}
-.mn-spec-top{display:flex}
+.mn-hero-art{flex:1 1 0;min-height:16%;width:calc(100% + var(--pad) * 2);margin:calc(var(--gap) * .5) calc(var(--pad) * -1) 0;display:block}
+.mn-specimen{padding:var(--pad);display:flex;flex-direction:column;gap:calc(var(--gap) * .4);justify-content:center}
+.mn-specimen .mn-spec-top{margin-bottom:auto}
+.mn-specimen .mn-spec-line:last-child{margin-bottom:auto}
+.mn-spec-top{display:flex;gap:1.2em}
 .mn-spec-big{font-family:var(--font-h);font-size:calc(38cqw * var(--scale));line-height:.95;font-weight:var(--weight);margin:.05em 0}
 .mn-spec-num{font-family:var(--font-h);font-size:calc(6cqw * var(--scale));letter-spacing:.06em;color:var(--muted)}
 .mn-spec-line{margin:0;font-size:calc(3.9cqw * var(--scale))}
